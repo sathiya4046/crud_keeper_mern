@@ -1,17 +1,18 @@
 import { Route, Routes } from 'react-router-dom';
-import './App.css';
 import Footer from './Footer';
-import Input from './Input';
-import Nav from './Nav';
-import Update from './Update';
+import Register from './Register';
+import Login from './Login';
+import { useState } from 'react';
+import Notes from './Notes';
 
 function App() {
+  const [token, setToken] = useState(null)
   return (
     <div className="App">
-      <Nav/>
       <Routes>
-        <Route path='/' element={<Input/>}/>
-        <Route path='/edit/:id' element={<Update/>}/>
+        <Route path='/' element={<Register/>}/>
+        <Route path='/login' element={<Login setToken = {setToken}/>}/>
+        <Route path='/notes' element={<Notes token = {token}/>}/>
       </Routes>
       <Footer/>
     </div>
