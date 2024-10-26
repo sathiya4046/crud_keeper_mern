@@ -1,6 +1,5 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
-// import {useNavigate} from 'react-router-dom'
 import {MdEdit,MdDelete} from "react-icons/md"
 import { FaPlus } from 'react-icons/fa6'
 
@@ -10,7 +9,6 @@ const Content = () => {
     const [content,setContent] = useState([])
     const [edit,setEdit] = useState(false)
     const [id,setId] = useState()
-    // const navigate = useNavigate()
 
     useEffect(()=>{
             setInterval(()=>{
@@ -25,7 +23,7 @@ const Content = () => {
                }catch(error){
                    return console.log(error)
                }
-            },10000)
+            },1000)
     },[])
     const handleSubmit = async(e)=>{
         e.preventDefault()
@@ -62,6 +60,7 @@ const Content = () => {
         .then(res=>console.log(res))
         setTitle("")
         setNotes("")
+        setEdit(false)
     }
     const handleDelete =(id)=>{
         axios.delete(`http://localhost:4000/delete/${id}`)
@@ -102,7 +101,6 @@ const Content = () => {
                     <div className="card-body">
                         <h5 className="card-title">{i.title}</h5>
                         <p className="card-text">{i.notes}</p>
-                        {/* <Link to={`/edit/${i._id}`} className="btn btn-primary m-2"><MdEdit/></Link> */}
                         <button onClick={()=>handleEdit(i._id)} className="btn btn-primary m-2"><MdEdit/></button>
                         <button onClick={()=>handleDelete(i._id)} className="btn btn-primary ms-4"><MdDelete/></button>
                     </div>

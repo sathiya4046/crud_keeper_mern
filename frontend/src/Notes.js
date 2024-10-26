@@ -16,6 +16,7 @@ const Notes = () => {
           }
         })
         if(response.data.Status==="Success"){
+          console.log(response)
           setAuth(true)
         }else{
           setAuth(false)
