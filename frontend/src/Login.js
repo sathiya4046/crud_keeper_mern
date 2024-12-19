@@ -2,8 +2,9 @@ import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import Nav from './Nav'
+import {baseUrl} from './constant/url'
 
-function Login({setToken}) {
+function Login() {
   const navigate = useNavigate()
   const [data,setData] = useState(null)
 
@@ -15,7 +16,7 @@ function Login({setToken}) {
   const handleLogin = async(e)=>{
     e.preventDefault()
     try{
-    await axios.post("http://localhost:4000/login",login,{withCredentials:true})
+    await axios.post(`${baseUrl}/login`,login,{withCredentials:true})
     .then(res=>{
       if (res.data.Status === "Success"){
         navigate('/notes')

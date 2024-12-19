@@ -2,6 +2,7 @@ import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import {MdEdit,MdDelete} from "react-icons/md"
 import { FaPlus } from 'react-icons/fa6'
+import { baseUrl } from './constant/url'
 
 const Content = () => {
     const [title, setTitle] = useState("")
@@ -14,7 +15,7 @@ const Content = () => {
     useEffect(()=>{
             setInterval(()=>{
                 try{
-                    axios.get("http://localhost:4000/note",{withCredentials:true})
+                    axios.get(`${baseUrl}/note`,{withCredentials:true})
                    .then(res=>setContent(res.data))
                    .then(err=>console.log(err))
                }catch(error){
@@ -26,7 +27,7 @@ const Content = () => {
     const handleSubmit = async(e)=>{
         e.preventDefault()
         try{
-            await axios.post("http://localhost:4000/input",{title,notes},{withCredentials:true})
+            await axios.post(`${baseUrl}/input`,{title,notes},{withCredentials:true})
             .then(res=>console.log(res))
             .then(err=>console.log(err))
         }catch(error){
@@ -50,14 +51,14 @@ const Content = () => {
     }
     const handleUpdate = (e)=>{
         e.preventDefault()
-        axios.put(`http://localhost:4000/update/${id}`,{title,notes})
+        axios.put(`${baseUrl}/update/${id}`,{title,notes})
         .then(res=>console.log(res))
         setTitle("")
         setNotes("")
         setEdit(false)
     }
     const handleDelete =(id)=>{
-        axios.delete(`http://localhost:4000/delete/${id}`)
+        axios.delete(`${baseUrl}/delete/${id}`)
         .then(res=>{
             console.log(res)
         })

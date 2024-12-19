@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import validate from './validate'
 import Nav from './Nav'
+import {baseUrl} from './constant/url'
 
 const Register = () => {
   const navigate = useNavigate()
@@ -18,7 +19,7 @@ const Register = () => {
     setErrors(validate(values))
     if(errors.name ==="" && errors.email==="" && errors.password===""){
       try{
-        await axios.post('http://localhost:4000/register', values)
+        await axios.post(`${baseUrl}/register`, values)
         .then(res=> {
           if (res.data.Status==="Success"){
             navigate('/login')
