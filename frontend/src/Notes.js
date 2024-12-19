@@ -3,6 +3,7 @@ import Content from './Content'
 import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { FaNoteSticky } from 'react-icons/fa6'
+import { baseUrl } from './constant/url'
 
 const Notes = () => {
     const [auth,setAuth] = useState(false)
