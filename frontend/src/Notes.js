@@ -10,11 +10,7 @@ const Notes = () => {
 
     useEffect(()=>{
       const verifyUser = async ()=>{
-        const response = await axios.get("http://localhost:4000/notes",{
-          headers:{
-            "Authorization":`${window.localStorage.getItem('token')}`
-          }
-        })
+        const response = await axios.get("http://localhost:4000/notes",{withCredentials:true})
         if(response.data.Status==="Success"){
           console.log(response)
           setAuth(true)
@@ -26,8 +22,15 @@ const Notes = () => {
     },[])
 
     const handleLogout = ()=>{
-      window.localStorage.removeItem('token')
-      navigate('/login')
+      axios.get('http://localhost:4000/logout',{withCredentials:true})
+      .then(res=>
+        {
+          if(res.data.Status==="Success"){
+            navigate('/login')
+          }
+        }
+      )
+      .then(err=>console.log(err))
     }
   return (
     <div>

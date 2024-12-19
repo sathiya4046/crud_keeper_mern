@@ -10,14 +10,11 @@ const Content = () => {
     const [edit,setEdit] = useState(false)
     const [id,setId] = useState()
 
+
     useEffect(()=>{
             setInterval(()=>{
                 try{
-                    axios.get("http://localhost:4000",{
-                        headers:{
-                          "Authorization":`${window.localStorage.getItem('token')}`
-                        }
-                      })
+                    axios.get("http://localhost:4000/note",{withCredentials:true})
                    .then(res=>setContent(res.data))
                    .then(err=>console.log(err))
                }catch(error){
@@ -25,14 +22,11 @@ const Content = () => {
                }
             },1000)
     },[])
+
     const handleSubmit = async(e)=>{
         e.preventDefault()
         try{
-            await axios.post("http://localhost:4000/input",{title,notes},{
-                headers:{
-                  "Authorization":`${window.localStorage.getItem('token')}`
-                }
-              })
+            await axios.post("http://localhost:4000/input",{title,notes},{withCredentials:true})
             .then(res=>console.log(res))
             .then(err=>console.log(err))
         }catch(error){
@@ -96,8 +90,8 @@ const Content = () => {
         </form>
         </div>
         <div className="container-fluid">
-                {content.map((i)=>(
-                    <div className="card m-4" id='card' key={i._id}>
+                {content.map((i,index)=>(
+                    <div className="card m-4" id='card' key={index}>
                     <div className="card-body">
                         <h5 className="card-title">{i.title}</h5>
                         <p className="card-text">{i.notes}</p>

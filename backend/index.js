@@ -6,24 +6,34 @@ const jwt = require('jsonwebtoken')
 const User = require('./models/User')
 const Notes = require('./models/Notes')
 const bodyParser = require('body-parser')
+const cookieParser = require("cookie-parser");
+const dotenv = require('dotenv')
+const path = require('path')
 
+dotenv.config()
 
 const app = express()
-const port = 10000
+const port = process.env.PORT
+const dirname = path.resolve()
 
 app.use(express.json())
 app.use(bodyParser.json())
-app.use(cors())
+app.use(cookieParser())
+app.use(cors({
+    origin:["http://localhost:3000"],
+    methods:["POST","GET","PUT","DELETE"],
+    credentials: true
+}))
 
-mongoose.connect('mongodb://127.0.0.1:27017/authCrudKeeper')
+mongoose.connect(process.env.MONGO_URL)
   .then(() => console.log('Connected!'));
 
 const verifyUser = (req,res,next)=>{
-    const token = req.headers.authorization
+    const token = req.cookies.token
     if(!token){
-        res.json({Status:"Unauthorized"})
+        res.json({Status:"Unauthoriz"})
     }else{
-        jwt.verify(token,"jwt-private-key",(err,decoded)=>{
+        jwt.verify(token,process.env.SECRET_KEY,(err,decoded)=>{
             if(err){
                 res.json({Status:"Invalid Token"})
             }else{
@@ -63,8 +73,14 @@ app.post('/login',async (req,res)=>{
         if(user){
             const comparePassword =await bcrypt.compare(password,user.password)
             if (!comparePassword) return res.json({Status:'Invalid credentials'});
-            const token = jwt.sign({ id: user._id }, "jwt-private-key", { expiresIn: '1h' });
-            res.json({Status:"Success", token });
+            const token = jwt.sign({ id: user._id }, process.env.SECRET_KEY, { expiresIn: '15d' });
+            res.cookie('token',token,{
+                maxAge : 15*24*60*1000,
+                httpOnly: true, //xss attacks
+                sameSite: "strict", //CSRF attacks
+                secure : process.env.NODE_ENV !== "development"
+            })
+            res.json({Status:"Success"});
         }else{
             return res.json({message:"Email already exists"})
         }
@@ -72,7 +88,7 @@ app.post('/login',async (req,res)=>{
         console.log(error)
     }
 })
-app.get('/',verifyUser,(req,res)=>{
+app.get('/note',verifyUser,(req,res)=>{
     Notes.find({userId:req.user.id})
     .then(user => res.json(user))
     .catch(err=>res.json(err))
@@ -97,5 +113,16 @@ app.delete("/delete/:id",(req,res)=>{
     .then(user => res.json(user))
     .catch(err=>res.json(err))
 })
+app.get("/logout", (req,res)=>{
+    res.clearCookie('token')
+    return res.json({Status:"Success"})
+})
 
-app.listen(port,()=>console.log("port running"))
+if(process.env.NODE_ENV === "production"){
+    app.use(express.static(path.join(dirname,"/frontend/build")))
+    app.use("*",(req,res)=>{
+        res.sendFile(path.resolve(dirname,"frontend","build","index.html"))
+    })
+}
+
+app.listen(port,()=>console.log(`port running on ${port}`))

@@ -15,10 +15,9 @@ function Login({setToken}) {
   const handleLogin = async(e)=>{
     e.preventDefault()
     try{
-    await axios.post("http://localhost:4000/login",login)
+    await axios.post("http://localhost:4000/login",login,{withCredentials:true})
     .then(res=>{
       if (res.data.Status === "Success"){
-        setToken(window.localStorage.setItem("token",res.data.token))
         navigate('/notes')
       }else{
         setData(res.data.Error)
