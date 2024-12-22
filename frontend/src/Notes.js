@@ -37,7 +37,7 @@ const Notes = () => {
     <div>
       {auth?
       <>
-        <nav className="navbar navbar-light bg-warning">
+        <nav className="navbar navbar-light bg-warning w-100">
             <i className="navbar-brand ms-4">
             <FaNoteSticky className='fs-2 mb-2'/>
             <strong className='ms-2 fs-2'>Notes</strong>
@@ -52,7 +52,7 @@ const Notes = () => {
         </main>
       </> :
       <>
-      <nav className="navbar navbar-light bg-warning">
+      <nav className="navbar navbar-light bg-warning w-100">
             <i className="navbar-brand ms-4">
             <FaNoteSticky className='fs-2 mb-2'/>
             <strong className='ms-2 fs-2'>Notes</strong>

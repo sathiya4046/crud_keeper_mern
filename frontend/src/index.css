@@ -11,17 +11,31 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
-#container{
-  width: 450px;
-}
 .register{
   height: 80vh;
 }
-#card{
-  width: 250px;
-  float: left;
+.register form{
+  width: 350px;
 }
-.footer{
-  position: fixed;
-  bottom: 0;
+.content form{
+  width: 350px;
+  margin: 0 auto;
+}
+.notes{
+  margin: 10px;
+}
+#card{
+  width: 350px;
+  margin: 12px;
+}
+
+
+@media (min-width: 500px){
+    .register form{
+    width: 500px;
+  }
+  #card{
+    width: 300px;
+    float: left;
+  }
 }

@@ -33,9 +33,9 @@ function Login() {
 
   return (
     <div>
-    <Nav/>
+      <Nav/>
     <div className='container-fluid d-flex justify-content-center align-items-center bg-light register'>
-        <form className="form-inline border rounded p-4 w-50" onSubmit={handleLogin}>
+        <form className="form-inline border rounded p-4" onSubmit={handleLogin}>
         <div className="form-group">
           <h1 className="text-center mb-4">Login</h1>
           <input 

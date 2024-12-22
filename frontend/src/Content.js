@@ -10,6 +10,7 @@ const Content = () => {
     const [content,setContent] = useState([])
     const [edit,setEdit] = useState(false)
     const [id,setId] = useState()
+    const [isExpanded, setIsExpanded] = useState(false)
 
 
     useEffect(()=>{
@@ -67,37 +68,48 @@ const Content = () => {
 
   return (
     <div>
-        <div>
-        <form className='container mt-4' id='container' onSubmit={edit ?handleUpdate :handleSubmit}>
-            <div className="form-group p-2">
-                <input 
-                    type="text" 
-                    className="form-control" 
-                    placeholder="Title"
-                    value={title}
-                    onChange={e=>setTitle(e.target.value)}
-                />
-            </div>
-            <div className="form-group p-2">
-                <textarea 
-                    type="text" 
-                    className="form-control" 
-                    placeholder="Write a notes"
-                    value={notes}
-                    onChange={e=>setNotes(e.target.value)}
-                />
-            </div>
-            <button type="submit" className="btn btn-success ms-2"><FaPlus/></button>
-        </form>
+        <div className='content'>
+            <form className='mt-4' onSubmit={edit ?handleUpdate :handleSubmit}>
+                <div className="form-group">
+                    <input 
+                        type="text" 
+                        className="form-control px-3 bg-secondary bg-opacity-10 fs-5" 
+                        placeholder={isExpanded?"Title" : "Write a Notes"}
+                        value={title}
+                        onChange={e=>setTitle(e.target.value)}
+                        onClick={()=>setIsExpanded(true)}
+                    />
+                </div>
+                {
+                    isExpanded && 
+                    <div>
+                        <div className="form-group my-3">
+                    <textarea 
+                        type="text" 
+                        className="form-control px-3 bg-secondary bg-opacity-10 fs-5" 
+                        placeholder="Write a notes..."
+                        value={notes}
+                        onChange={e=>setNotes(e.target.value)}
+                    />
+                        </div>
+                        <div className='text-end'>
+                        <button type="submit" className="rounded-pill btn btn-success me-3"><FaPlus/></button>
+                        </div>
+                    </div>
+                }
+            </form>
         </div>
-        <div className="container-fluid">
+        <div className="notes m-2">
                 {content.map((i,index)=>(
-                    <div className="card m-4" id='card' key={index}>
+                    <div className="card mx-auto mx-sm-2" id='card' key={index}>
                     <div className="card-body">
                         <h5 className="card-title">{i.title}</h5>
+                        <hr />
                         <p className="card-text">{i.notes}</p>
-                        <button onClick={()=>handleEdit(i._id)} className="btn btn-primary m-2"><MdEdit/></button>
-                        <button onClick={()=>handleDelete(i._id)} className="btn btn-primary ms-4"><MdDelete/></button>
+                        <div className='d-flex justify-content-end'>
+                        <button onClick={()=>handleEdit(i._id)} className=" rounded-pill btn btn-success mx-3"><MdEdit/></button>
+                        <button onClick={()=>handleDelete(i._id)} className=" rounded-pill btn btn-success "><MdDelete/></button>
+                        </div>
                     </div>
                     </div> 
                 ))}
